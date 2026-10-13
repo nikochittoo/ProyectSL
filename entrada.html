@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Experimento · Sacude Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <!-- Reemplazar por el logo en verde: <img src="logo.svg" height="28" alt="Sacude Labs"> -->
+    <a class="logo" href="index.html"><i></i>SACUDE LABS</a>
+    <nav>
+      <a href="index.html#feed">Registro</a>
+      <a href="index.html?f=EXP#feed">Demos</a>
+      <a href="index.html?f=SL#feed">Publicaciones</a>
+      <a href="index.html?f=SACUDE%20PROJECT#feed">Open source</a>
+      <a href="index.html?f=EVT#feed">Eventos</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="ficha"></main>
+
+<footer><div class="wrap">Sacude Labs · Un espacio para explorar sin miedo a romper cosas, siempre con respeto.</div></footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+const id = new URLSearchParams(location.search).get("id");
+const i = ENTRADAS.findIndex(e => e.id === id);
+const e = ENTRADAS[i];
+const raiz = $("#ficha");
+const url = x => "entrada.html?id=" + encodeURIComponent(x.id);
+if(!e){
+  raiz.innerHTML = `<a class="volver" href="index.html#feed">← volver al registro</a><p class="vacio">No existe el experimento "${esc(id)}". Revisá el código en data.js.</p>`;
+} else {
+  const t = TIPOS[prefijo(e.id)] || { nombre:"Otro" };
+  document.title = `[${e.id}] ${e.titulo} · Sacude Labs`;
+  const nueva = ENTRADAS[i-1], vieja = ENTRADAS[i+1];
+  const pag = (x, lado) => x ? `<a href="${url(x)}"><small>${lado}</small><b>[${esc(x.id)}]</b><span>${esc(x.titulo)}</span></a>` : `<span></span>`;
+  raiz.innerHTML = `
+    <a class="volver" href="index.html#feed">← volver al registro</a>
+    <article class="ficha">
+      <div class="meta"><span class="id">[${esc(e.id)}]</span><span class="date">${fmt(e.fecha)}</span></div>
+      <span class="tag">${esc(t.nombre)}</span>
+      <h1>${esc(e.titulo)}</h1>
+      <div class="media">${media(e.media)}</div>
+      <div class="cuerpo">${(e.cuerpo || [e.texto]).map(p => `<p>${esc(p)}</p>`).join("")}</div>
+      <div class="links">${(e.links||[]).map(l=>`<a class="btn${l.main?" main":""}" href="${esc(l.url)}">${esc(l.t)}</a>`).join("")}</div>
+    </article>
+    <div class="pager">${pag(vieja,"← anterior")}${pag(nueva,"siguiente →")}</div>`;
+}
+</script>
+</body>
+</html>

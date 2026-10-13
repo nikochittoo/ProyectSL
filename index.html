@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sacude Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <!-- Reemplazar por el logo en verde: <img src="logo.svg" height="28" alt="Sacude Labs"> -->
+    <a class="logo" href="index.html"><i></i>SACUDE LABS</a>
+    <nav>
+      <a href="index.html#feed">Registro</a>
+      <a href="index.html?f=EXP#feed">Demos</a>
+      <a href="index.html?f=SL#feed">Publicaciones</a>
+      <a href="index.html?f=SACUDE%20PROJECT#feed">Open source</a>
+      <a href="index.html?f=EVT#feed">Eventos</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="term">
+      <div class="term-bar"><b></b><b></b><b></b><span>sacude@labs:~</span></div>
+      <div class="term-body">
+        <p id="cmd"></p>
+        <h1 id="titulo"></h1>
+        <p id="sub" style="opacity:0;transition:opacity .8s">estado: abierto · método: probar, romper, documentar</p>
+      </div>
+    </div>
+    <p class="lead">Laboratorio virtual de la Sacude. Acá subimos lo que armamos: news, proyectos, open source y eventos. Cada cosa lleva su código de experimento.</p>
+  </section>
+
+  <section id="codigos" class="codigos"></section>
+
+  <section id="feed">
+    <div class="bar" id="filtros"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+</main>
+
+<footer><div class="wrap">Sacude Labs · Un espacio para explorar sin miedo a romper cosas, siempre con respeto.</div></footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+let actual = new URLSearchParams(location.search).get("f") || "all";
+if(actual !== "all" && !TIPOS[actual]) actual = "all";
+
+function filtros(){
+  const lista = [["all","Todo"], ...Object.entries(TIPOS).map(([k,t]) => [k, t.plural])];
+  $("#filtros").innerHTML = lista.map(([k,t]) => `<button class="chip" data-f="${esc(k)}" aria-pressed="${k===actual}">${esc(t)}</button>`).join("")
+    + `<button class="romper" id="romper">[ romper algo ]</button>`;
+}
+function codigos(){
+  $("#codigos").innerHTML = Object.entries(TIPOS).map(([k,t]) =>
+    `<div class="cod"><b>[${esc(k)}-###]</b><span>${esc(t.nombre)}</span><small>${esc(t.desc)}</small></div>`).join("");
+}
+function render(){
+  const lista = ENTRADAS.filter(e => actual === "all" || prefijo(e.id) === actual);
+  $("#grid").innerHTML = lista.length ? lista.map(e => {
+    const t = TIPOS[prefijo(e.id)] || { nombre:"Otro" };
+    const href = "entrada.html?id=" + encodeURIComponent(e.id);
+    return `<article class="card${e.ancho?" wide":""}">
+      <div class="media">${media(e.media)}</div>
+      <div class="body">
+        <div class="meta"><a class="id" href="${href}" style="text-decoration:none">[${esc(e.id)}]</a><span class="date">${fmt(e.fecha)}</span></div>
+        <h2><a href="${href}">${esc(e.titulo)}</a></h2>
+        <span class="tag">${esc(t.nombre)}</span>
+        <p>${esc(e.texto)}</p>
+        <div class="links"><a class="btn" href="${href}">Abrir ficha</a>${(e.links||[]).map(l=>`<a class="btn${l.main?" main":""}" href="${esc(l.url)}">${esc(l.t)}</a>`).join("")}</div>
+      </div>
+    </article>`;
+  }).join("") : `<p class="vacio">No hay experimentos de este tipo todavía. Agregá el primero en data.js.</p>`;
+}
+document.addEventListener("click", ev => {
+  const f = ev.target.closest("[data-f]");
+  if(f){ actual = f.dataset.f; filtros(); render(); }
+});
+
+filtros(); codigos(); render();
+</script>
+</body>
+</html>
