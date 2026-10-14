@@ -1,0 +1,33 @@
+name: Reportar un error
+description: Algo no anda como debería
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: input
+    id: codigo
+    attributes:
+      label: Código del experimento
+      description: Si aplica, ej. SACUDE PROJECT-003.
+  - type: textarea
+    id: pasos
+    attributes:
+      label: ¿Cómo se repite?
+      description: Los pasos, de a uno.
+      placeholder: |
+        1. Abro...
+        2. Hago click en...
+        3. Pasa...
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: ¿Qué esperabas que pasara y qué pasó?
+    validations:
+      required: true
+  - type: input
+    id: entorno
+    attributes:
+      label: Entorno
+      description: Sistema operativo, navegador o versión.
+      placeholder: Windows 11, Chrome, v0.2

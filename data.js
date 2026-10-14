@@ -71,3 +71,33 @@ const ENTRADAS = [
     media:{ kind:"youtube", id:"dQw4w9WgXcQ" },
     links:[{t:"Ver en YouTube",url:"#"}] }
 ];
+
+/* =====================================================================
+   TABLERO (tablero.html)
+   estado  → "idea" | "proximamente" | "proceso" | "publicado"
+   issue   → número del Issue de GitHub donde se discute (opcional)
+   entrada → id de la ficha cuando ya se publicó, ej: "EXP-003" (opcional)
+   tags    → temas: ["python", "hardware", "web"]
+   Estos textos de ejemplo se reemplazan por los reales.
+   ===================================================================== */
+const GITHUB = { org:"TU-ORG", repo:"TU-REPO" };   // ← cambialo: arma los links a Issues y Projects
+
+const ESTADOS = [
+  { k:"idea",         t:"Ideas",        d:"Propuestas abiertas. Si te prende la lámpara, sumate." },
+  { k:"proximamente", t:"Próximamente", d:"Ya tienen equipo y fecha tentativa." },
+  { k:"proceso",      t:"En proceso",   d:"Se están armando ahora mismo." },
+  { k:"publicado",    t:"Publicado",    d:"Ya salieron del laboratorio." }
+];
+
+const IDEAS = [
+  { id:"IDEA-005", estado:"idea", titulo:"Estación meteorológica con ESP32",
+    texto:"Sensores baratos, una placa y una página que muestre los datos en vivo.", tags:["hardware","python"], autor:"@ejemplo" },
+  { id:"IDEA-004", estado:"idea", titulo:"Guía de accesibilidad para webs de eventos",
+    texto:"Una lista corta y práctica para que cualquier persona pueda usar la web de un evento.", tags:["web","accesibilidad"], autor:"@ejemplo" },
+  { id:"IDEA-003", estado:"proximamente", titulo:"Jornada abierta de experimentos",
+    texto:"Una tarde para armar y desarmar cosas juntos.", tags:["evento"], autor:"@ejemplo", issue:1 },
+  { id:"IDEA-002", estado:"proceso", titulo:"NAS casero con una PC vieja",
+    texto:"Estamos documentando el armado, con los errores incluidos.", tags:["hardware"], autor:"@ejemplo", issue:2 },
+  { id:"IDEA-001", estado:"publicado", titulo:"Del cable suelto al primer LED",
+    texto:"El primer experimento del lab, ya con video y ficha.", tags:["hardware"], autor:"@ejemplo", entrada:"EXP-001" }
+];

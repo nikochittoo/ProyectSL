@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tablero · Sacude Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<header>
+  <div class="wrap">
+    <!-- Reemplazar por el logo en verde: <img src="logo.svg" height="28" alt="Sacude Labs"> -->
+    <a class="logo" href="index.html"><i></i>SACUDE LABS</a>
+    <nav aria-label="Principal">
+      <a href="index.html#feed">Registro</a>
+      <a href="index.html?f=EXP#feed">Demos</a>
+      <a href="index.html?f=SL#feed">Publicaciones</a>
+      <a href="index.html?f=SACUDE%20PROJECT#feed">Open source</a>
+      <a href="index.html?f=EVT#feed">Eventos</a>
+      <a href="tablero.html">Tablero</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <section class="sub-hero">
+    <span class="id">[TABLERO]</span>
+    <h1>Qué se está cocinando en el lab</h1>
+    <p>Ideas abiertas, cosas que vienen y experimentos en marcha. Si una te prende la lámpara, sumate; y si no está la tuya, proponela. No hace falta ser experta ni experto: se aprende haciendo.</p>
+    <div class="links" style="margin-top:22px">
+      <a class="btn main" id="proponer" href="#">[ + proponer una idea ]</a>
+      <a class="btn" id="project" href="#">Ver el Project en GitHub</a>
+    </div>
+  </section>
+  <div class="tablero" id="tablero"></div>
+</main>
+
+<footer><div class="wrap">Sacude Labs · Un espacio para explorar sin miedo a romper cosas, siempre con respeto.</div></footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+const gh = p => `https://github.com/${GITHUB.org}/${GITHUB.repo}/${p}`;
+$("#proponer").href = gh("issues/new?template=idea.yml");
+$("#project").href = `https://github.com/orgs/${GITHUB.org}/projects`;
+
+function tarjeta(i){
+  const ficha = i.entrada ? "entrada.html?id=" + encodeURIComponent(i.entrada) : "";
+  const prendo = i.issue ? gh("issues/" + i.issue) : gh("issues/new?title=" + encodeURIComponent("Me prendo con " + i.id + ": " + i.titulo));
+  const accion = i.estado === "publicado"
+    ? (ficha ? `<a class="btn main" href="${ficha}">Ver ficha</a>` : "")
+    : `<a class="btn${i.estado==="idea" ? " main" : ""}" href="${prendo}">${i.estado==="idea" ? "Me prendo" : "Sumarme"}</a>`;
+  return `<article class="card idea-card"><div class="body">
+    <div class="meta"><span class="id">[${esc(i.id)}]</span></div>
+    <h3>${esc(i.titulo)}</h3>
+    <p>${esc(i.texto)}</p>
+    <div class="tags">${(i.tags||[]).map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>
+    ${i.autor ? `<span class="autor">idea de ${esc(i.autor)}</span>` : ""}
+    ${accion ? `<div class="links">${accion}</div>` : ""}
+  </div></article>`;
+}
+$("#tablero").innerHTML = ESTADOS.map(s => {
+  const lista = IDEAS.filter(i => i.estado === s.k);
+  return `<section class="col" aria-labelledby="h-${s.k}">
+    <h2 id="h-${s.k}"><i class="dot ${s.k}" aria-hidden="true"></i>${esc(s.t)}<span class="n">${lista.length}</span></h2>
+    <p class="col-d">${esc(s.d)}</p>
+    ${lista.length ? lista.map(tarjeta).join("") : `<p class="vacio-col">Todavía no hay nada acá.</p>`}
+  </section>`;
+}).join("");
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[ERROR-404] · Sacude Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<header>
+  <div class="wrap">
+    <!-- Reemplazar por el logo en verde: <img src="logo.svg" height="28" alt="Sacude Labs"> -->
+    <a class="logo" href="index.html"><i></i>SACUDE LABS</a>
+    <nav aria-label="Principal">
+      <a href="index.html#feed">Registro</a>
+      <a href="index.html?f=EXP#feed">Demos</a>
+      <a href="index.html?f=SL#feed">Publicaciones</a>
+      <a href="index.html?f=SACUDE%20PROJECT#feed">Open source</a>
+      <a href="index.html?f=EVT#feed">Eventos</a>
+      <a href="tablero.html">Tablero</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <section class="sub-hero">
+    <div class="term">
+      <div class="term-bar"><b></b><b></b><b></b><span>sacude@labs:~</span></div>
+      <div class="term-body">
+        <p>&gt; buscar "<span id="ruta"></span>"</p>
+        <h1 style="color:var(--verde)">[ERROR-404]</h1>
+        <p>experimento no encontrado · 0 resultados</p>
+      </div>
+    </div>
+    <p style="margin-top:26px">Esta página no existe, se rompió o todavía no la armamos. Romper cosas es parte del laboratorio, pero esta vez no fue a propósito.</p>
+    <div class="links" style="margin-top:20px">
+      <a class="btn main" href="index.html">Volver al registro</a>
+      <a class="btn" href="tablero.html">Ver el tablero</a>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">Sacude Labs · Un espacio para explorar sin miedo a romper cosas, siempre con respeto.</div></footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+$("#ruta").textContent = location.pathname;
+</script>
+</body>
+</html>

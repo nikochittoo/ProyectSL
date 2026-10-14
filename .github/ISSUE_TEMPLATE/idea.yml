@@ -1,0 +1,54 @@
+name: Proponer una idea
+description: Contanos qué te gustaría que armemos en Sacude Labs
+title: "[IDEA] "
+labels: ["idea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por proponer. Acá no hay ideas chicas ni locas: se vale probar, romper y aprender, siempre con respeto.
+  - type: textarea
+    id: idea
+    attributes:
+      label: ¿Qué te gustaría hacer?
+      description: Contala con tus palabras. Si tenés una imagen, un link o un dibujo, sumalo.
+      placeholder: "Ej: una estación meteorológica con una placa ESP32 y una página para ver los datos en vivo."
+    validations:
+      required: true
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: ¿Qué tipo de cosa sería?
+      options:
+        - Demo (EXP)
+        - Publicación (SL)
+        - Proyecto open source (SACUDE PROJECT)
+        - Evento (EVT)
+        - No sé todavía
+    validations:
+      required: true
+  - type: input
+    id: temas
+    attributes:
+      label: Temas
+      description: Separados por coma.
+      placeholder: python, hardware, web
+  - type: dropdown
+    id: participacion
+    attributes:
+      label: ¿Cómo te gustaría participar?
+      multiple: true
+      options:
+        - Solo la propongo
+        - Quiero ayudar a armarla
+        - Puedo programar
+        - Puedo diseñar
+        - Puedo documentar o escribir
+        - Quiero aprender haciéndola
+  - type: checkboxes
+    id: conducta
+    attributes:
+      label: Código de conducta
+      options:
+        - label: Leí el código de conducta y me comprometo a respetarlo.
+          required: true

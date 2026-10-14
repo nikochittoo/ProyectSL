@@ -9,21 +9,23 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="skip" href="#feed">Saltar al contenido</a>
 <header>
   <div class="wrap">
     <!-- Reemplazar por el logo en verde: <img src="logo.svg" height="28" alt="Sacude Labs"> -->
     <a class="logo" href="index.html"><i></i>SACUDE LABS</a>
-    <nav>
+    <nav aria-label="Principal">
       <a href="index.html#feed">Registro</a>
       <a href="index.html?f=EXP#feed">Demos</a>
       <a href="index.html?f=SL#feed">Publicaciones</a>
       <a href="index.html?f=SACUDE%20PROJECT#feed">Open source</a>
       <a href="index.html?f=EVT#feed">Eventos</a>
+      <a href="tablero.html">Tablero</a>
     </nav>
   </div>
 </header>
 
-<main class="wrap">
+<main class="wrap" id="main">
   <section class="hero">
     <div class="term">
       <div class="term-bar"><b></b><b></b><b></b><span>sacude@labs:~</span></div>
@@ -34,6 +36,7 @@
       </div>
     </div>
     <p class="lead">Laboratorio virtual de la Sacude. Acá subimos lo que armamos: news, proyectos, open source y eventos. Cada cosa lleva su código de experimento.</p>
+    <p class="contador" id="contador"></p>
   </section>
 
   <section id="codigos" class="codigos"></section>
@@ -55,7 +58,7 @@ if(actual !== "all" && !TIPOS[actual]) actual = "all";
 function filtros(){
   const lista = [["all","Todo"], ...Object.entries(TIPOS).map(([k,t]) => [k, t.plural])];
   $("#filtros").innerHTML = lista.map(([k,t]) => `<button class="chip" data-f="${esc(k)}" aria-pressed="${k===actual}">${esc(t)}</button>`).join("")
-    + `<button class="romper" id="romper">[ romper algo ]</button>`;
+    + `<button class="romper" id="romper" aria-pressed="${document.body.classList.contains("roto")}">${document.body.classList.contains("roto") ? "[ arreglar todo ]" : "[ romper algo ]"}</button>`;
 }
 function codigos(){
   $("#codigos").innerHTML = Object.entries(TIPOS).map(([k,t]) =>
@@ -84,6 +87,16 @@ document.addEventListener("click", ev => {
 });
 
 filtros(); codigos(); render();
+
+/* contador del hero: cuenta las entradas de ENTRADAS (se actualiza solo) */
+(function(){
+  const total = ENTRADAS.length, el = $("#contador");
+  const desglose = Object.entries(TIPOS).map(([k,t]) => [t.plural.toLowerCase(), ENTRADAS.filter(e => prefijo(e.id)===k).length]).filter(x => x[1]).map(([n,c]) => c + " " + n).join(" · ");
+  const pintar = n => el.innerHTML = `<b>${String(n).padStart(3,"0")}</b>experimentos publicados<small>${desglose}</small>`;
+  if(reducido || total < 2){ pintar(total); return; }
+  let n = 0; const paso = Math.max(1, Math.ceil(total/20));
+  const t = setInterval(() => { n = Math.min(total, n+paso); pintar(n); if(n >= total) clearInterval(t); }, 45);
+})();
 </script>
 </body>
 </html>

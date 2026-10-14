@@ -18,8 +18,27 @@ function media(m){
 document.addEventListener("click", ev => {
   const y = ev.target.closest("[data-yt]");
   if(y){ y.parentElement.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${y.dataset.yt}?autoplay=1" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Video"></iframe>`; }
-  if(ev.target.id === "romper"){
-    const roto = document.body.classList.toggle("roto");
-    ev.target.textContent = roto ? "[ arreglar todo ]" : "[ romper algo ]";
-  }
+  if(ev.target.id === "romper") toggleRoto();
+});
+
+function toast(msg){
+  let t = document.getElementById("toast");
+  if(!t){ t = document.createElement("div"); t.id = "toast"; t.className = "toast"; t.setAttribute("role","status"); document.body.appendChild(t); }
+  t.textContent = msg; t.classList.add("on");
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("on"), 2600);
+}
+function toggleRoto(aviso){
+  const roto = document.body.classList.toggle("roto");
+  const b = document.getElementById("romper");
+  if(b){ b.textContent = roto ? "[ arreglar todo ]" : "[ romper algo ]"; b.setAttribute("aria-pressed", roto); }
+  if(aviso) toast(roto ? "[EXP-KONAMI] modo romper activado" : "[EXP-KONAMI] todo arreglado (por ahora)");
+}
+/* Easter egg: ↑ ↑ ↓ ↓ ← → ← → B A */
+const KONAMI = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+let kp = 0;
+addEventListener("keydown", e => {
+  if(/input|textarea|select/i.test(e.target.tagName)) return;
+  const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+  kp = (k === KONAMI[kp]) ? kp + 1 : (k === KONAMI[0] ? 1 : 0);
+  if(kp === KONAMI.length){ kp = 0; toggleRoto(true); }
 });
