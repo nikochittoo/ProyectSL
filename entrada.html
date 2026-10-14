@@ -21,6 +21,8 @@
       <a href="index.html?f=SACUDE%20PROJECT#feed">Open source</a>
       <a href="index.html?f=EVT#feed">Eventos</a>
       <a href="tablero.html">Tablero</a>
+      <a href="sobre.html">Sobre el lab</a>
+      <a href="sumate.html">Sumate</a>
     </nav>
   </div>
 </header>
@@ -41,6 +43,7 @@ if(!e){
   raiz.innerHTML = `<a class="volver" href="index.html#feed">← volver al registro</a><p class="vacio">No existe el experimento "${esc(id)}". Revisá el código en data.js.</p>`;
 } else {
   const t = TIPOS[prefijo(e.id)] || { nombre:"Otro" };
+  const min = Math.max(1, Math.round((e.cuerpo || [e.texto]).join(" ").split(/\s+/).length / 200));
   document.title = `[${e.id}] ${e.titulo} · Sacude Labs`;
   const nueva = ENTRADAS[i-1], vieja = ENTRADAS[i+1];
   const pag = (x, lado) => x ? `<a href="${url(x)}"><small>${lado}</small><b>[${esc(x.id)}]</b><span>${esc(x.titulo)}</span></a>` : `<span></span>`;
@@ -48,13 +51,37 @@ if(!e){
     <a class="volver" href="index.html#feed">← volver al registro</a>
     <article class="ficha">
       <div class="meta"><span class="id">[${esc(e.id)}]</span><span class="date">${fmt(e.fecha)}</span></div>
-      <span class="tag">${esc(t.nombre)}</span>
+      <div class="lec-bar"><span class="tag">${esc(t.nombre)}</span><span class="tiempo">≈ ${min} min de lectura</span><span class="lec-tools"><button type="button" class="btn lec-size" id="lec-menos" aria-label="Achicar letra">A−</button><button type="button" class="btn lec-size" id="lec-mas" aria-label="Agrandar letra">A+</button><button type="button" class="btn" id="lectura" aria-pressed="false">Modo lectura</button></span></div>
       <h1>${esc(e.titulo)}</h1>
       <div class="media">${media(e.media)}</div>
       <div class="cuerpo">${(e.cuerpo || [e.texto]).map(p => `<p>${esc(p)}</p>`).join("")}</div>
       <div class="links">${(e.links||[]).map(l=>`<a class="btn${l.main?" main":""}" href="${esc(l.url)}">${esc(l.t)}</a>`).join("")}</div>
     </article>
     <div class="pager">${pag(vieja,"← anterior")}${pag(nueva,"siguiente →")}</div>`;
+}
+
+/* ===== Modo lectura: letra grande, columna angosta, sin menú ni pie. Esc para salir ===== */
+if(e){
+  const guardar = (k, v) => { try{ localStorage.setItem(k, v); }catch(_){} };
+  const leer = k => { try{ return localStorage.getItem(k); }catch(_){ return null; } };
+  const btn = $("#lectura"); let tam = parseInt(leer("sl-lec-tam")) || 19;
+  const aplicarTam = () => document.body.style.setProperty("--lec", tam + "px");
+  const poner = (on, aviso) => {
+    document.body.classList.toggle("lectura", on);
+    btn.setAttribute("aria-pressed", on); btn.textContent = on ? "Salir" : "Modo lectura";
+    guardar("sl-lectura", on ? "1" : "0");
+    if(aviso) toast(on ? "Modo lectura · Esc para salir" : "Modo lectura desactivado");
+  };
+  aplicarTam();
+  btn.addEventListener("click", () => poner(!document.body.classList.contains("lectura"), true));
+  $("#lec-menos").addEventListener("click", () => { tam = Math.max(15, tam - 1); aplicarTam(); guardar("sl-lec-tam", tam); });
+  $("#lec-mas").addEventListener("click", () => { tam = Math.min(28, tam + 1); aplicarTam(); guardar("sl-lec-tam", tam); });
+  addEventListener("keydown", ev => { if(ev.key === "Escape" && document.body.classList.contains("lectura")) poner(false, true); });
+  if(leer("sl-lectura") === "1") poner(true, false);
+  // barra de progreso de lectura
+  const prog = document.createElement("div"); prog.className = "lec-prog"; document.body.appendChild(prog);
+  const act = () => { const h = document.documentElement.scrollHeight - innerHeight; prog.style.transform = `scaleX(${h > 0 ? Math.min(1, scrollY / h) : 0})`; };
+  addEventListener("scroll", act, { passive:true }); addEventListener("resize", act); act();
 }
 </script>
 </body>

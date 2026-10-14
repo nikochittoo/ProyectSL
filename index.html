@@ -21,6 +21,8 @@
       <a href="index.html?f=SACUDE%20PROJECT#feed">Open source</a>
       <a href="index.html?f=EVT#feed">Eventos</a>
       <a href="tablero.html">Tablero</a>
+      <a href="sobre.html">Sobre el lab</a>
+      <a href="sumate.html">Sumate</a>
     </nav>
   </div>
 </header>
@@ -79,7 +81,7 @@ function render(){
         <div class="links"><a class="btn" href="${href}">Abrir ficha</a>${(e.links||[]).map(l=>`<a class="btn${l.main?" main":""}" href="${esc(l.url)}">${esc(l.t)}</a>`).join("")}</div>
       </div>
     </article>`;
-  }).join("") : `<p class="vacio">No hay experimentos de este tipo todavía. Agregá el primero en data.js.</p>`;
+  }).join("") : `<p class="vacio">Todavía no hay experimentos de este tipo. Pronto vas a encontrar algo por acá.</p>`;
 }
 document.addEventListener("click", ev => {
   const f = ev.target.closest("[data-f]");

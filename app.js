@@ -42,3 +42,12 @@ addEventListener("keydown", e => {
   kp = (k === KONAMI[kp]) ? kp + 1 : (k === KONAMI[0] ? 1 : 0);
   if(kp === KONAMI.length){ kp = 0; toggleRoto(true); }
 });
+
+/* Pie de página: redes (se editan en data.js → REDES) */
+(function(){
+  const w = document.querySelector("footer .wrap");
+  if(!w || typeof REDES === "undefined") return;
+  w.insertAdjacentHTML("beforeend", '<nav class="redes" aria-label="Secciones"><a href="sobre.html">Sobre el lab</a><a href="sumate.html">Sumate</a><a href="tablero.html">Tablero</a></nav>');
+  w.insertAdjacentHTML("beforeend", `<nav class="redes" aria-label="Redes sociales"><span>${esc(REDES_NOTA)}</span>${REDES.map(r =>
+    `<a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(r.nombre)} ${esc(r.ver)} (se abre en otra pestaña)">${esc(r.nombre)} <small>${esc(r.ver)}</small></a>`).join("")}</nav>`);
+})();

@@ -150,3 +150,52 @@ footer{border-top:1px solid var(--gris-linea);padding:28px 0 40px;font-size:13px
 .vacio-col{font-size:13px;opacity:.78;padding:6px 2px}
 @media(max-width:1000px){.tablero{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:640px){.tablero{grid-template-columns:1fr}}
+
+.redes{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;margin-top:14px}
+.redes a{text-decoration:none;color:var(--blanco);border-bottom:1px solid var(--gris-linea);padding-bottom:1px;transition:color .25s,border-color .25s}
+.redes a:hover{color:var(--verde);border-color:var(--verde)}
+.redes small{opacity:.78}
+
+.bloque{padding:34px 0;border-top:1px solid var(--gris-linea)}
+.bloque h2{font-size:clamp(20px,3vw,26px);margin-bottom:12px;letter-spacing:-.01em}
+.bloque>p{max-width:640px;opacity:.88;margin-bottom:20px}
+.cod span{font-size:13px;opacity:.88}
+.pasos{list-style:none;counter-reset:p;display:grid;gap:14px;max-width:640px;padding:0}
+.pasos li{counter-increment:p;display:flex;gap:16px}
+.pasos li::before{content:"0" counter(p);color:var(--verde);font-weight:800}
+.pasos a{color:var(--verde)}
+@media(max-width:1000px){header nav a{margin-left:14px;font-size:12px}}
+
+/* ===== 9. GENERADOR DE PLANTILLAS ===== */
+.gen{display:grid;grid-template-columns:minmax(260px,340px) minmax(0,1fr);gap:32px;padding:10px 0 90px;align-items:start}
+.gen-form{display:flex;flex-direction:column;gap:18px;position:sticky;top:84px}
+.gen-form label{font-size:12px;display:block;margin-bottom:6px}
+.gen-form input[type=text],.gen-form textarea{font:inherit;font-size:14px;width:100%;background:var(--gris);color:var(--blanco);border:1px solid var(--gris-linea);border-radius:0 12px 0 12px;padding:10px 12px;resize:vertical}
+.gen-form input[type=text]:focus-visible,.gen-form textarea:focus-visible{border-color:var(--verde)}
+.gen-form input[type=file]{font:inherit;font-size:12px;color:var(--blanco);width:100%}
+.gen-form .chk{display:flex;gap:10px;align-items:center}
+.gen-form .chk label{margin:0}
+.gen-form input[type=checkbox]{accent-color:var(--verde);width:18px;height:18px;flex:none}
+.gen-prev{display:flex;flex-direction:column;gap:34px}
+.gen-prev figure{display:flex;flex-direction:column;gap:10px;margin:0;align-items:flex-start}
+.gen-prev figcaption{font-size:12px;opacity:.78}
+.gen-prev canvas{width:100%;max-width:560px;height:auto;border:1px solid var(--gris-linea);border-radius:0 20px 0 20px;background:var(--negro)}
+.gen-prev button{font:inherit;font-size:13px;cursor:pointer}
+@media(max-width:900px){.gen{grid-template-columns:1fr}.gen-form{position:static}}
+
+/* ===== 10. MODO LECTURA ===== */
+.lec-bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.tiempo{font-size:12px;opacity:.78}
+.lec-tools{margin-left:auto;display:flex;gap:8px}
+.lec-tools .btn{background:transparent;color:var(--blanco);font:inherit;font-size:12px;padding:6px 12px;cursor:pointer}
+.lec-tools .btn:hover{color:var(--negro)}
+.lec-size{display:none}
+.lec-prog{position:fixed;top:0;left:0;right:0;height:3px;background:var(--verde);transform:scaleX(0);transform-origin:0 50%;z-index:50;pointer-events:none}
+.lectura{background-image:none}
+.lectura::before{display:none}
+.lectura header,.lectura footer,.lectura .volver,.lectura .pager{display:none}
+.lectura .ficha{margin:0 auto;max-width:720px;padding-top:70px;padding-bottom:90px}
+.lectura .ficha h1{font-size:clamp(30px,5vw,44px)}
+.lectura .cuerpo{max-width:none;font-size:var(--lec,19px);line-height:1.85;opacity:1}
+.lectura .lec-tools{position:fixed;top:14px;right:14px;z-index:40;background:var(--negro);border:1px solid var(--gris-linea);padding:6px;border-radius:0 14px 0 14px}
+.lectura .lec-size{display:inline-block}

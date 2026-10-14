@@ -36,6 +36,24 @@ const TIPOS = {
 };
 
 const ENTRADAS = [
+  { id:"SACUDE PROJECT-001", fecha:"2026-10-14", ancho:true,
+    titulo:"SchoolGuard, bloqueo de sitios web para PCs de colegios",
+    texto:"Software open source para Windows que bloquea sitios desde la propia PC, sin hardware extra. Tiene panel local con login, categorías y actualización automática.",
+    cuerpo:[
+      "SchoolGuard filtra los sitios web de las computadoras de un colegio solo con software, sin comprar ni instalar equipos aparte. Funciona como un servicio de Windows que arranca con la PC y resuelve los nombres de dominio de forma local: los sitios bloqueados no cargan y el resto navega normal.",
+      "Se administra desde un panel que solo se abre en esa misma PC y pide usuario y contraseña. Desde ahí se cargan sitios, se activan categorías (por ejemplo adultos, redes sociales o apuestas) a partir de listas públicas y se arma una lista blanca de sitios que nunca se bloquean.",
+      "La versión 0.2 suma medidas contra el esquivado del filtro, protege la carpeta de datos y exige una autorización del administrador para desinstalar. Las PCs se actualizan solas desde las versiones publicadas en GitHub, con verificación de integridad y vuelta atrás si algo falla.",
+      "Estado: en desarrollo. Todavía tiene límites conocidos, como que una VPN o un proxy puede esquivar el filtro y que IPv6 no está cubierto. Si lo vas a probar, hacelo primero en una máquina virtual."
+    ],
+    media:{ kind:"social", red:"GitHub", cuenta:"nikochittoo/schoolguard", url:"https://github.com/nikochittoo/schoolguard" },
+    links:[
+      {t:"Ver el repo",url:"https://github.com/nikochittoo/schoolguard",main:true},
+      {t:"Reportar un error",url:"https://github.com/nikochittoo/schoolguard/issues"}
+    ] }
+];
+
+/* EJEMPLOS de entradas de otros tipos (copiá y adaptá lo que necesites):
+const EJEMPLOS = [
   { id:"EVT-001", fecha:"2026-11-15",
     titulo:"Jornada abierta de experimentos",
     texto:"Traé algo para armar, desarmar o entender. Hay mesa de herramientas y gente para ayudarte.",
@@ -71,6 +89,8 @@ const ENTRADAS = [
     media:{ kind:"youtube", id:"dQw4w9WgXcQ" },
     links:[{t:"Ver en YouTube",url:"#"}] }
 ];
+*/
+
 
 /* =====================================================================
    TABLERO (tablero.html)
@@ -80,7 +100,7 @@ const ENTRADAS = [
    tags    → temas: ["python", "hardware", "web"]
    Estos textos de ejemplo se reemplazan por los reales.
    ===================================================================== */
-const GITHUB = { org:"TU-ORG", repo:"TU-REPO" };   // ← cambialo: arma los links a Issues y Projects
+const GITHUB = { org:"sacudedevs", repo:"TU-REPO" };   // ← poné el nombre del repo de esta web: arma los links a Issues
 
 const ESTADOS = [
   { k:"idea",         t:"Ideas",        d:"Propuestas abiertas. Si te prende la lámpara, sumate." },
@@ -90,6 +110,12 @@ const ESTADOS = [
 ];
 
 const IDEAS = [
+  { id:"IDEA-001", estado:"publicado", titulo:"SchoolGuard, bloqueo web para colegios",
+    texto:"El primer proyecto open source del lab, ya con su ficha.", tags:["windows","dotnet","educación"], autor:"@nikochittoo", entrada:"SACUDE PROJECT-001" }
+];
+
+/* EJEMPLOS de tarjetas para las otras columnas:
+const IDEAS_EJEMPLO = [
   { id:"IDEA-005", estado:"idea", titulo:"Estación meteorológica con ESP32",
     texto:"Sensores baratos, una placa y una página que muestre los datos en vivo.", tags:["hardware","python"], autor:"@ejemplo" },
   { id:"IDEA-004", estado:"idea", titulo:"Guía de accesibilidad para webs de eventos",
@@ -100,4 +126,18 @@ const IDEAS = [
     texto:"Estamos documentando el armado, con los errores incluidos.", tags:["hardware"], autor:"@ejemplo", issue:2 },
   { id:"IDEA-001", estado:"publicado", titulo:"Del cable suelto al primer LED",
     texto:"El primer experimento del lab, ya con video y ficha.", tags:["hardware"], autor:"@ejemplo", entrada:"EXP-001" }
+];
+*/
+
+
+/* =====================================================================
+   REDES (aparecen en el pie de todas las páginas)
+   Por ahora son las de Sacude Devs. Cuando haya redes de Sacude Labs,
+   cambiá las url y el texto de REDES_NOTA.
+   ===================================================================== */
+const REDES_NOTA = "Por ahora, nuestras redes son las de Sacude Devs:";
+const REDES = [
+  { nombre:"GitHub",    ver:"sacudedevs",  url:"https://github.com/sacudedevs" },
+  { nombre:"Instagram", ver:"@sacudedevs", url:"https://www.instagram.com/sacudedevs/" },
+  { nombre:"TikTok",    ver:"@sacude.devs", url:"https://www.tiktok.com/@sacude.devs" }
 ];

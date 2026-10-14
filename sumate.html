@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sumate · Sacude Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<header>
+  <div class="wrap">
+    <!-- Reemplazar por el logo en verde: <img src="logo.svg" height="28" alt="Sacude Labs"> -->
+    <a class="logo" href="index.html"><i></i>SACUDE LABS</a>
+    <nav aria-label="Principal">
+      <a href="index.html#feed">Registro</a>
+      <a href="index.html?f=EXP#feed">Demos</a>
+      <a href="index.html?f=SL#feed">Publicaciones</a>
+      <a href="index.html?f=SACUDE%20PROJECT#feed">Open source</a>
+      <a href="index.html?f=EVT#feed">Eventos</a>
+      <a href="tablero.html">Tablero</a>
+      <a href="sobre.html">Sobre el lab</a>
+      <a href="sumate.html">Sumate</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <section class="sub-hero">
+    <span class="id">[SUMATE]</span>
+    <h1>Sumate al laboratorio</h1>
+    <p>No hace falta ser experta ni experto, ni tener un proyecto armado. Hay muchas formas de participar: elegí la que te quede cómoda y empezá por algo chico.</p>
+  </section>
+
+  <section class="bloque">
+    <h2>Formas de participar</h2>
+    <div class="grid" style="padding-bottom:20px">
+      <article class="card idea-card"><div class="body">
+        <span class="id">[PARTICIPAR-01]</span><h3>Proponé una idea</h3>
+        <p>Contanos qué te gustaría que armemos. No hay ideas chicas ni locas.</p>
+        <div class="links"><a class="btn main" id="proponer" href="#">Proponer una idea</a></div>
+      </div></article>
+      <article class="card idea-card"><div class="body">
+        <span class="id">[PARTICIPAR-02]</span><h3>Prendete a una idea</h3>
+        <p>Mirá el tablero y elegí algo que te dé ganas de hacer junto al equipo.</p>
+        <div class="links"><a class="btn main" href="tablero.html">Ir al tablero</a></div>
+      </div></article>
+      <article class="card idea-card"><div class="body">
+        <span class="id">[PARTICIPAR-03]</span><h3>Aportá código</h3>
+        <p>Elegí un proyecto open source, buscá un Issue para empezar y mandá tu aporte.</p>
+        <div class="links"><a class="btn main" href="index.html?f=SACUDE%20PROJECT#feed">Ver proyectos</a></div>
+      </div></article>
+      <article class="card idea-card"><div class="body">
+        <span class="id">[PARTICIPAR-04]</span><h3>Escribí o documentá</h3>
+        <p>Una guía, una traducción o el registro de un experimento también suman.</p>
+        <div class="links"><a class="btn" id="proponer2" href="#">Contanos qué querés escribir</a></div>
+      </div></article>
+      <article class="card idea-card"><div class="body">
+        <span class="id">[PARTICIPAR-05]</span><h3>Vení a un evento</h3>
+        <p>Jornadas abiertas para armar, desarmar y aprender en persona.</p>
+        <div class="links"><a class="btn main" href="index.html?f=EVT#feed">Ver eventos</a></div>
+      </div></article>
+      <article class="card idea-card"><div class="body">
+        <span class="id">[PARTICIPAR-06]</span><h3>Seguinos</h3>
+        <p>Por ahora estamos en las redes de Sacude Devs.</p>
+        <div class="links" id="redes-btn"></div>
+      </div></article>
+    </div>
+  </section>
+
+  <section class="bloque">
+    <h2>Tu primer aporte en 4 pasos</h2>
+    <ol class="pasos">
+      <li><span>Mirá el <a href="tablero.html">tablero</a> y elegí algo chico que te interese.</span></li>
+      <li><span>Avisá en el Issue de esa idea que querés participar, así nadie pisa el trabajo de otra persona.</span></li>
+      <li><span>Hacé tu parte y probala. Si algo se rompe, anotalo: es parte del experimento.</span></li>
+      <li><span>Mandá tu aporte y esperá comentarios del equipo. Se revisa entre todos para aprender entre todos.</span></li>
+    </ol>
+  </section>
+
+  <section class="bloque">
+    <h2>Reglas de la casa</h2>
+    <p>Equivocarse está bien. Faltarle el respeto a alguien, no. Cada proyecto tiene su código de conducta, y no se suben claves ni datos personales. Si tenés dudas, preguntá: nadie nació sabiendo.</p>
+  </section>
+</main>
+
+<footer><div class="wrap">Sacude Labs · Un espacio para explorar sin miedo a romper cosas, siempre con respeto.</div></footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+const gh = p => `https://github.com/${GITHUB.org}/${GITHUB.repo}/${p}`;
+$("#proponer").href = $("#proponer2").href = gh("issues/new?template=idea.yml");
+$("#redes-btn").innerHTML = REDES.map(r => `<a class="btn" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(r.nombre)} (se abre en otra pestaña)">${esc(r.nombre)}</a>`).join("");
+</script>
+</body>
+</html>

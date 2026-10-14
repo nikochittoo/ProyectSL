@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sobre el lab · Sacude Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<header>
+  <div class="wrap">
+    <!-- Reemplazar por el logo en verde: <img src="logo.svg" height="28" alt="Sacude Labs"> -->
+    <a class="logo" href="index.html"><i></i>SACUDE LABS</a>
+    <nav aria-label="Principal">
+      <a href="index.html#feed">Registro</a>
+      <a href="index.html?f=EXP#feed">Demos</a>
+      <a href="index.html?f=SL#feed">Publicaciones</a>
+      <a href="index.html?f=SACUDE%20PROJECT#feed">Open source</a>
+      <a href="index.html?f=EVT#feed">Eventos</a>
+      <a href="tablero.html">Tablero</a>
+      <a href="sobre.html">Sobre el lab</a>
+      <a href="sumate.html">Sumate</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <section class="sub-hero">
+    <span class="id">[SOBRE EL LAB]</span>
+    <h1>Un laboratorio para explorar sin miedo</h1>
+    <p>Sacude Labs es otra parte de la Sacude: el laboratorio virtual donde subimos lo que armamos, probamos y aprendemos. Acá viven los experimentos, el código abierto, las publicaciones y los eventos, separados del contenido de Sacude Devs para que cada cosa tenga su lugar.</p>
+  </section>
+
+  <section class="bloque">
+    <h2>Cómo leer los códigos</h2>
+    <p>Todo lo que sale del lab lleva un código de experimento. El prefijo te dice qué es, y el número, en qué orden salió.</p>
+    <div class="codigos" id="codigos"></div>
+  </section>
+
+  <section class="bloque">
+    <h2>Cómo trabajamos</h2>
+    <div class="codigos">
+      <div class="cod"><b>Probar sin miedo</b><span>Se vale equivocarse, romper y volver a intentar. Un error es parte del experimento.</span></div>
+      <div class="cod"><b>Romper con respeto</b><span>Exploramos a fondo, pero cuidando a las personas, los espacios y el trabajo de los demás.</span></div>
+      <div class="cod"><b>Documentar todo</b><span>Contamos lo que anduvo y también lo que no, para que otra persona no empiece de cero.</span></div>
+      <div class="cod"><b>Compartir abierto</b><span>Lo que hacemos queda a la vista, con código abierto cuando se puede.</span></div>
+    </div>
+  </section>
+
+  <section class="bloque">
+    <h2>Seguí el laboratorio</h2>
+    <p>Mirá qué se está cocinando en el tablero o sumate a participar.</p>
+    <div class="links">
+      <a class="btn main" href="tablero.html">Ver el tablero</a>
+      <a class="btn" href="sumate.html">Cómo sumarme</a>
+    </div>
+  </section>
+  <!-- Para presentar al equipo, agregá acá otro <section class="bloque"> con sus nombres y roles. -->
+</main>
+
+<footer><div class="wrap">Sacude Labs · Un espacio para explorar sin miedo a romper cosas, siempre con respeto.</div></footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+$("#codigos").innerHTML = Object.entries(TIPOS).map(([k,t]) =>
+  `<div class="cod"><b>[${esc(k)}-###]</b><span>${esc(t.nombre)}</span><small>${esc(t.desc)}</small></div>`).join("");
+</script>
+</body>
+</html>
