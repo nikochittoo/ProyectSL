@@ -18,6 +18,8 @@
       <a href="index.html#feed">Registro</a>
       <a href="index.html?f=EXP#feed">Demos</a>
       <a href="index.html?f=SL#feed">Publicaciones</a>
+      <a href="index.html?f=GUIA#feed">Guías</a>
+      <a href="diccionario.html">Diccionario</a>
       <a href="index.html?f=SACUDE%20PROJECT#feed">Open source</a>
       <a href="index.html?f=EVT#feed">Eventos</a>
       <a href="tablero.html">Tablero</a>
@@ -55,12 +57,21 @@
 <script src="app.js"></script>
 <script>
 let actual = new URLSearchParams(location.search).get("f") || "all";
-if(actual !== "all" && !TIPOS[actual]) actual = "all";
+if(actual !== "all" && (!TIPOS[actual] || TIPOS[actual].filtro === false)) actual = "all";
 
 function filtros(){
-  const lista = [["all","Todo"], ...Object.entries(TIPOS).map(([k,t]) => [k, t.plural])];
-  $("#filtros").innerHTML = lista.map(([k,t]) => `<button class="chip" data-f="${esc(k)}" aria-pressed="${k===actual}">${esc(t)}</button>`).join("")
-    + `<button class="romper" id="romper" aria-pressed="${document.body.classList.contains("roto")}">${document.body.classList.contains("roto") ? "[ arreglar todo ]" : "[ romper algo ]"}</button>`;
+  const roto = document.body.classList.contains("roto");
+  let izq;
+  if(actual === "all"){
+    // En Registro: botones de filtro
+    const lista = [["all","Todo"], ...Object.entries(TIPOS).filter(([k,t]) => t.filtro !== false).map(([k,t]) => [k, t.plural])];
+    izq = lista.map(([k,t]) => `<button class="chip" data-f="${esc(k)}" aria-pressed="${k===actual}">${esc(t)}</button>`).join("");
+  } else {
+    // Dentro de un tipo: sin botones (el menú de arriba ya navega); solo el título de la sección
+    const t = TIPOS[actual];
+    izq = `<div class="seccion"><span class="id">[${esc(actual)}-###]</span><h2>${esc(t.plural)}</h2><p>${esc(t.desc)}</p><a href="index.html#feed" data-f="all">← ver todo el registro</a></div>`;
+  }
+  $("#filtros").innerHTML = izq + `<button class="romper" id="romper" aria-pressed="${roto}">${roto ? "[ arreglar todo ]" : "[ romper algo ]"}</button>`;
 }
 function codigos(){
   $("#codigos").innerHTML = Object.entries(TIPOS).map(([k,t]) =>
@@ -78,6 +89,7 @@ function render(){
         <h2><a href="${href}">${esc(e.titulo)}</a></h2>
         <span class="tag">${esc(t.nombre)}</span>
         <p>${esc(e.texto)}</p>
+        ${credito(e)}
         <div class="links"><a class="btn" href="${href}">Abrir ficha</a>${(e.links||[]).map(l=>`<a class="btn${l.main?" main":""}" href="${esc(l.url)}">${esc(l.t)}</a>`).join("")}</div>
       </div>
     </article>`;
@@ -85,7 +97,12 @@ function render(){
 }
 document.addEventListener("click", ev => {
   const f = ev.target.closest("[data-f]");
-  if(f){ actual = f.dataset.f; filtros(); render(); }
+  if(!f) return;
+  ev.preventDefault();
+  actual = f.dataset.f; filtros(); render(); marcarNav(actual);
+  try{ history.replaceState(null, "", actual === "all" ? location.pathname : "?f=" + encodeURIComponent(actual)); }catch(_){}
+  const foco = $("#filtros h2") || $("#filtros .chip");   // el botón que tocaste desaparece: llevamos el foco al título
+  if(foco){ if(foco.tagName === "H2") foco.tabIndex = -1; foco.focus(); }
 });
 
 filtros(); codigos(); render();

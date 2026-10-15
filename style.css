@@ -118,7 +118,7 @@ footer{border-top:1px solid var(--gris-linea);padding:28px 0 40px;font-size:13px
 .pager a:last-child{text-align:right;border-radius:16px 0 16px 0}
 .pager small{opacity:.55}
 .pager b{color:var(--verde)}
-@media(max-width:640px){header nav{display:none}.pager{grid-template-columns:1fr}}
+@media(max-width:640px){.pager{grid-template-columns:1fr}}
 
 /* ===== 8. ACCESIBILIDAD, TABLERO, EXTRAS ===== */
 .skip{position:absolute;left:12px;top:-60px;z-index:40;background:var(--verde);color:var(--negro);padding:8px 14px;border-radius:4px 14px 4px 14px;font-weight:700;text-decoration:none}
@@ -164,7 +164,6 @@ footer{border-top:1px solid var(--gris-linea);padding:28px 0 40px;font-size:13px
 .pasos li{counter-increment:p;display:flex;gap:16px}
 .pasos li::before{content:"0" counter(p);color:var(--verde);font-weight:800}
 .pasos a{color:var(--verde)}
-@media(max-width:1000px){header nav a{margin-left:14px;font-size:12px}}
 
 /* ===== 9. GENERADOR DE PLANTILLAS ===== */
 .gen{display:grid;grid-template-columns:minmax(260px,340px) minmax(0,1fr);gap:32px;padding:10px 0 90px;align-items:start}
@@ -199,3 +198,61 @@ footer{border-top:1px solid var(--gris-linea);padding:28px 0 40px;font-size:13px
 .lectura .cuerpo{max-width:none;font-size:var(--lec,19px);line-height:1.85;opacity:1}
 .lectura .lec-tools{position:fixed;top:14px;right:14px;z-index:40;background:var(--negro);border:1px solid var(--gris-linea);padding:6px;border-radius:0 14px 0 14px}
 .lectura .lec-size{display:inline-block}
+
+/* ===== 11. GUÍAS: BLOQUES DE CÓDIGO Y FIRMA ===== */
+.cuerpo-h{font-size:20px;margin-top:12px;letter-spacing:-.01em}
+.cuerpo-lista{padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.codebloque{position:relative;background:var(--negro);border:1px solid var(--gris-linea);border-radius:0 14px 0 14px}
+.code-t{display:block;font-size:12px;opacity:.78;padding:10px 90px 0 16px}
+.codebloque pre{margin:0;padding:14px 16px;overflow-x:auto;font-size:14px;line-height:1.6;color:var(--verde);white-space:pre}
+.code-copiar{position:absolute;top:8px;right:8px;font:inherit;font-size:12px;padding:4px 10px;cursor:pointer;background:transparent;color:var(--blanco)}
+.code-copiar:hover{color:var(--negro)}
+.firma{display:block;font-size:12px;opacity:.9}
+.firma a{color:var(--verde);text-decoration:none;border-bottom:1px solid var(--gris-linea);transition:border-color .25s}
+.firma a:hover{border-color:var(--verde)}
+.ficha .firma{font-size:15px;margin-top:6px}
+
+/* ===== 12. NAVEGACIÓN ACTIVA, SECCIÓN Y DICCIONARIO ===== */
+header nav a[aria-current="page"]{color:var(--verde);opacity:1}
+.seccion{display:flex;flex-direction:column;gap:4px;max-width:620px}
+.seccion h2{font-size:clamp(22px,3.4vw,30px);letter-spacing:-.01em;outline:none}
+.seccion p{opacity:.88;font-size:14px}
+.seccion a{font-size:13px;color:var(--verde);text-decoration:none;border-bottom:1px solid var(--gris-linea);align-self:flex-start;transition:border-color .25s}
+.seccion a:hover{border-color:var(--verde)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.dic-buscar{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;margin:8px 0 18px}
+.dic-buscar input{font:inherit;font-size:15px;width:min(420px,100%);background:var(--gris);color:var(--blanco);border:1px solid var(--gris-linea);border-radius:0 14px 0 14px;padding:11px 14px}
+.dic-buscar input:focus-visible{border-color:var(--verde)}
+#dic-cuenta{font-size:12px;opacity:.78}
+.letras{display:flex;flex-wrap:wrap;gap:8px}
+.letras a{min-width:34px;text-align:center;text-decoration:none;border:1px solid var(--gris-linea);padding:4px 8px;font-size:13px;transition:all .25s var(--ease)}
+.letras a:nth-child(odd){border-radius:0 10px 0 10px}
+.letras a:nth-child(even){border-radius:10px 0 10px 0}
+.letras a:hover{background:var(--verde);color:var(--negro);border-color:var(--verde)}
+.letra-h{font-size:clamp(34px,5vw,48px);color:var(--verde);font-weight:800;line-height:1;margin:34px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--gris-linea);scroll-margin-top:84px}
+.terminos{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+.termino{background:var(--gris);border:1px solid var(--gris-linea);border-radius:0 18px 0 18px;padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;scroll-margin-top:84px;transition:border-color .25s}
+.termino:nth-child(even){border-radius:18px 0 18px 0}
+.termino:target,.termino:hover{border-color:var(--verde)}
+.termino h3{font-size:19px;letter-spacing:-.01em}
+.termino .def{font-size:14px;opacity:.9}
+.termino .ej{font-size:13px;opacity:.85;border-left:2px solid var(--verde);padding-left:12px}
+.termino .ver{font-size:12px;opacity:.9}
+.termino .ver a{color:var(--verde);text-decoration:none;border-bottom:1px solid var(--gris-linea)}
+.vacio-dic{opacity:.88;padding:30px 0}
+.vacio-dic a{color:var(--verde)}
+
+/* ===== 13. MENÚ DE ARRIBA: una sola línea, o botón "Menú" si no entra ===== */
+header .wrap{gap:24px}
+.logo{flex:none}
+header nav{display:flex;align-items:center;gap:18px;white-space:nowrap}
+header nav a{margin-left:0;font-size:13px;white-space:nowrap}
+.menu-btn{display:none;flex:none;font:inherit;font-size:13px;color:var(--blanco);background:transparent;border:1px solid var(--gris-linea);border-radius:4px 14px 4px 14px;padding:7px 16px;cursor:pointer;transition:all .25s var(--ease)}
+.menu-btn:hover,.menu-btn[aria-expanded="true"]{border-color:var(--verde);color:var(--verde)}
+@media(max-width:1240px){
+  .menu-btn{display:inline-block}
+  header nav{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:flex-start;gap:0;background:var(--negro);border-bottom:1px solid var(--gris-linea);padding:8px 24px 18px}
+  header.menu-abierto nav{display:flex}
+  header nav a{font-size:15px;padding:11px 0;width:100%;opacity:.9;border-bottom:1px solid var(--gris-linea)}
+  header nav a:last-child{border-bottom:0}
+}

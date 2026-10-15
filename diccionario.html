@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diccionario tech · Sacude Labs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<header>
+  <div class="wrap">
+    <!-- Reemplazar por el logo en verde: <img src="logo.svg" height="28" alt="Sacude Labs"> -->
+    <a class="logo" href="index.html"><i></i>SACUDE LABS</a>
+    <nav aria-label="Principal">
+      <a href="index.html#feed">Registro</a>
+      <a href="index.html?f=EXP#feed">Demos</a>
+      <a href="index.html?f=SL#feed">Publicaciones</a>
+      <a href="index.html?f=GUIA#feed">Guías</a>
+      <a href="diccionario.html">Diccionario</a>
+      <a href="index.html?f=SACUDE%20PROJECT#feed">Open source</a>
+      <a href="index.html?f=EVT#feed">Eventos</a>
+      <a href="tablero.html">Tablero</a>
+      <a href="sobre.html">Sobre el lab</a>
+      <a href="sumate.html">Sumate</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <section class="sub-hero">
+    <span class="id">[DIC-###]</span>
+    <h1>Diccionario tech</h1>
+    <p>Palabras que se escuchan en el mundo de la programación, explicadas sin vueltas. Cada término lleva su código y la firma de quien lo escribió.</p>
+  </section>
+
+  <div class="dic-buscar">
+    <label for="q" class="sr">Buscar un término</label>
+    <input type="search" id="q" placeholder="Buscar un término..." autocomplete="off">
+    <span id="dic-cuenta" role="status"></span>
+  </div>
+  <nav class="letras" id="letras" aria-label="Ir a una letra"></nav>
+  <div id="lista"></div>
+  <div style="height:90px"></div>
+</main>
+
+<footer><div class="wrap">Sacude Labs · Un espacio para explorar sin miedo a romper cosas, siempre con respeto.</div></footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+const norm = s => String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const ordenados = [...DICCIONARIO].sort((a, b) => a.termino.localeCompare(b.termino, "es", { sensitivity:"base" }));
+const porId = {}; DICCIONARIO.forEach(x => porId[x.id] = x);
+const inicial = t => { const c = norm(t).charAt(0).toUpperCase(); return /[A-Z]/.test(c) ? c : "#"; };
+const idLetra = l => "letra-" + (l === "#" ? "num" : l);
+const gh = p => `https://github.com/${GITHUB.org}/${GITHUB.repo}/${p}`;
+
+function termino(x){
+  const ver = (x.tambien || []).filter(i => porId[i]).map(i => `<a href="#${esc(i.toLowerCase())}">${esc(porId[i].termino)}</a>`).join(", ");
+  return `<article class="termino" id="${esc(x.id.toLowerCase())}">
+    <span class="id">[${esc(x.id)}]</span>
+    <h3>${esc(x.termino)}</h3>
+    <p class="def">${esc(x.def)}</p>
+    ${x.ejemplo ? `<p class="ej">${esc(x.ejemplo)}</p>` : ""}
+    ${ver ? `<p class="ver">Ver también: ${ver}</p>` : ""}
+    ${credito(x)}
+  </article>`;
+}
+
+function pintar(){
+  const busqueda = $("#q").value.trim(), q = norm(busqueda);
+  const lista = ordenados.filter(x => !q || norm(x.termino + " " + x.def).includes(q));
+  const grupos = {};
+  lista.forEach(x => { const l = inicial(x.termino); (grupos[l] = grupos[l] || []).push(x); });
+  const letras = Object.keys(grupos).sort((a, b) => a === "#" ? 1 : b === "#" ? -1 : a.localeCompare(b));
+  $("#letras").innerHTML = letras.map(l => `<a href="#${idLetra(l)}">${l}</a>`).join("");
+  $("#lista").innerHTML = lista.length
+    ? letras.map(l => `<section aria-labelledby="${idLetra(l)}"><h2 class="letra-h" id="${idLetra(l)}">${l}</h2><div class="terminos">${grupos[l].map(termino).join("")}</div></section>`).join("")
+    : `<p class="vacio-dic">${DICCIONARIO.length ? "No encontramos ese término." : "Todavía no hay términos."} ¿Querés proponerlo? <a href="${gh("issues/new?template=idea.yml&title=" + encodeURIComponent("[IDEA] Término para el diccionario: " + busqueda))}">Mandanos la idea</a>.</p>`;
+  $("#dic-cuenta").textContent = q ? `${lista.length} resultado${lista.length === 1 ? "" : "s"}` : `${lista.length} término${lista.length === 1 ? "" : "s"}`;
+}
+$("#q").addEventListener("input", pintar);
+pintar();
+if(location.hash){ const el = document.getElementById(location.hash.slice(1)); if(el) el.scrollIntoView(); }
+</script>
+</body>
+</html>

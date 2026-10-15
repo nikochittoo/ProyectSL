@@ -4,7 +4,9 @@
 
    1. CÓDIGOS (TIPOS): el prefijo del id decide qué es cada entrada.
       EXP-001            → Demo
-      SL-001             → Publicación nuestra
+      SL-001             → Publicación creada por la Sacude (videos, tutoriales, news, opiniones)
+      GUIA-001           → Guía de consulta: texto o video; también de otros autores, con su crédito
+      DIC-001            → Término del diccionario tech (se carga en DICCIONARIO, más abajo; no en ENTRADAS)
       SACUDE PROJECT-001 → Proyecto open source nuestro
       EVT-001            → Evento
       ¿Querés otro tipo? Agregá una línea acá (ej: "LAB": {...}) y listo:
@@ -26,11 +28,18 @@
         { kind:"video",   src:"video/demo.mp4" }       (alojado: pesa)
         { kind:"social",  red:"Instagram", cuenta:"@sacude", url:"https://..." }
       links   → botones: { t:"Ver repo", url:"https://...", main:true }
+      autor   → (opcional) firma: "@nikochittoo". Se ve como "por @nikochittoo" y enlaza si está en AUTORES
+      fuente  → (opcional) para contenido de otras personas: { t:"Nombre del autor o canal", url:"https://..." }
+      cuerpo  → además de párrafos (texto) acepta bloques:
+                { h:"Subtítulo" }  ·  { lista:["paso 1", "paso 2"] }  ·  { codigo:"git clone ...", titulo:"Clonar" }
+                (el bloque de código lleva botón "Copiar")
    ===================================================================== */
 
 const TIPOS = {
   "EXP":            { nombre:"Demo",                 plural:"Demos",         desc:"Pruebas y armados que mostramos funcionando, o rompiéndose." },
-  "SL":             { nombre:"Publicación",          plural:"Publicaciones", desc:"Anuncios, news y textos propios de Sacude Labs." },
+  "SL":             { nombre:"Publicación",          plural:"Publicaciones", desc:"Contenido creado por la Sacude: videos, tutoriales, news y opiniones." },
+  "GUIA":           { nombre:"Guía",                 plural:"Guías",         desc:"Material de consulta en texto o video, propio o de otras personas con su crédito." },
+  "DIC":            { nombre:"Término",              plural:"Diccionario",   desc:"Definiciones del diccionario tech, cada una con su código y su firma.", filtro:false },
   "SACUDE PROJECT": { nombre:"Proyecto open source", plural:"Open source",   desc:"Proyectos nuestros con código abierto, listos para recibir aportes." },
   "EVT":            { nombre:"Evento",               plural:"Eventos",       desc:"Jornadas, charlas y encuentros." }
 };
@@ -89,6 +98,28 @@ const EJEMPLOS = [
     media:{ kind:"youtube", id:"dQw4w9WgXcQ" },
     links:[{t:"Ver en YouTube",url:"#"}] }
 ];
+
+  GUÍA propia, con pasos y comandos para copiar:
+  { id:"GUIA-001", fecha:"2026-10-20",
+    titulo:"Cómo clonar un repositorio",
+    texto:"Bajá una copia de cualquier proyecto de GitHub a tu compu, en 3 pasos.",
+    autor:"@nikochittoo",
+    cuerpo:[
+      "Clonar es descargar un repositorio completo, con todo su historial, para trabajar en tu compu.",
+      { h:"Pasos" },
+      { lista:["Copiá la URL del repo (botón verde Code).", "Abrí una terminal en la carpeta donde lo querés.", "Ejecutá el comando de abajo."] },
+      { codigo:"git clone https://github.com/usuario/repo.git", titulo:"Clonar el repo" },
+      "Si falla, revisá que la URL esté bien copiada."
+    ],
+    links:[{t:"Ver en GitHub",url:"https://github.com",main:true}] },
+
+  GUÍA con un video de otra persona (con crédito):
+  { id:"GUIA-002", fecha:"2026-10-21",
+    titulo:"Instalar Visual Studio Code",
+    texto:"Un video paso a paso para instalarlo en Windows.",
+    fuente:{ t:"Nombre del canal", url:"https://www.youtube.com/@canal" },
+    media:{ kind:"youtube", id:"ID_DEL_VIDEO" } },
+
 */
 
 
@@ -140,4 +171,50 @@ const REDES = [
   { nombre:"GitHub",    ver:"sacudedevs",  url:"https://github.com/sacudedevs" },
   { nombre:"Instagram", ver:"@sacudedevs", url:"https://www.instagram.com/sacudedevs/" },
   { nombre:"TikTok",    ver:"@sacude.devs", url:"https://www.tiktok.com/@sacude.devs" }
+];
+
+/* =====================================================================
+   AUTORES: links de perfil para las firmas (opcional).
+   Si un autor no está acá, la firma se muestra igual pero sin link.
+   ===================================================================== */
+const AUTORES = {
+  "@nikochittoo": "https://github.com/nikochittoo"
+};
+
+/* =====================================================================
+   DICCIONARIO TECH (diccionario.html)
+   Se ordena solo de la A a la Z: agregá los términos en cualquier orden.
+   id       → "DIC-001", "DIC-002"... (único)
+   termino  → la palabra
+   def      → la definición, corta y sin vueltas
+   ejemplo  → (opcional) una frase de uso
+   tambien  → (opcional) ids de términos relacionados: ["DIC-002"]
+   autor    → firma: "@usuario"   (o fuente:{ t:"Nombre", url:"https://..." })
+   Las definiciones de ejemplo son un borrador: revisalas antes de publicar.
+   ===================================================================== */
+const DICCIONARIO = [
+  { id:"DIC-001", termino:"Vibe coding",
+    def:"Programar contándole a una IA lo que querés en lenguaje natural y dejar que ella escriba el código, probando y ajustando sobre la marcha. Es rápido para prototipar, pero conviene entender y revisar lo que se genera.",
+    ejemplo:"\"Armé la primera versión con vibe coding y después la fui ordenando a mano.\"", tambien:["DIC-003"], autor:"@nikochittoo" },
+  { id:"DIC-002", termino:"Commitear",
+    def:"Guardar un conjunto de cambios en el historial de git junto con un mensaje que explica qué se hizo. Cada commit queda como un punto al que se puede volver.",
+    ejemplo:"\"Commiteá antes de probar eso, así podés volver si se rompe.\"", tambien:["DIC-006"], autor:"@nikochittoo" },
+  { id:"DIC-003", termino:"Codear",
+    def:"En la jerga, escribir código; programar.",
+    ejemplo:"\"Me pasé la tarde codeando el tablero.\"", autor:"@nikochittoo" },
+  { id:"DIC-004", termino:"Bug",
+    def:"Un error en un programa que hace que se comporte distinto de lo esperado. Encontrarlo y arreglarlo se llama depurar.",
+    autor:"@nikochittoo" },
+  { id:"DIC-005", termino:"Clonar",
+    def:"Descargar a tu compu una copia completa de un repositorio, con todo su historial, usando git clone.",
+    tambien:["DIC-006"], autor:"@nikochittoo" },
+  { id:"DIC-006", termino:"Repositorio",
+    def:"La carpeta de un proyecto junto con el historial de todos sus cambios, gestionada con git. GitHub aloja repositorios en línea. Se abrevia \"repo\".",
+    tambien:["DIC-002", "DIC-005"], autor:"@nikochittoo" },
+  { id:"DIC-007", termino:"Fork",
+    def:"Una copia de un repositorio ajeno en tu propia cuenta de GitHub. Te permite modificarlo sin tocar el original, por ejemplo para proponer un cambio.",
+    tambien:["DIC-008"], autor:"@nikochittoo" },
+  { id:"DIC-008", termino:"Pull Request",
+    def:"Un pedido para que los cambios de una rama o de un fork se integren al proyecto principal. El equipo los revisa y comenta antes de aceptarlos. Se abrevia \"PR\".",
+    tambien:["DIC-007"], autor:"@nikochittoo" }
 ];

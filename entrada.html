@@ -18,6 +18,8 @@
       <a href="index.html#feed">Registro</a>
       <a href="index.html?f=EXP#feed">Demos</a>
       <a href="index.html?f=SL#feed">Publicaciones</a>
+      <a href="index.html?f=GUIA#feed">Guías</a>
+      <a href="diccionario.html">Diccionario</a>
       <a href="index.html?f=SACUDE%20PROJECT#feed">Open source</a>
       <a href="index.html?f=EVT#feed">Eventos</a>
       <a href="tablero.html">Tablero</a>
@@ -43,7 +45,7 @@ if(!e){
   raiz.innerHTML = `<a class="volver" href="index.html#feed">← volver al registro</a><p class="vacio">No existe el experimento "${esc(id)}". Revisá el código en data.js.</p>`;
 } else {
   const t = TIPOS[prefijo(e.id)] || { nombre:"Otro" };
-  const min = Math.max(1, Math.round((e.cuerpo || [e.texto]).join(" ").split(/\s+/).length / 200));
+  const min = Math.max(1, Math.round(textoPlano(e.cuerpo || [e.texto]).split(/\s+/).length / 200));
   document.title = `[${e.id}] ${e.titulo} · Sacude Labs`;
   const nueva = ENTRADAS[i-1], vieja = ENTRADAS[i+1];
   const pag = (x, lado) => x ? `<a href="${url(x)}"><small>${lado}</small><b>[${esc(x.id)}]</b><span>${esc(x.titulo)}</span></a>` : `<span></span>`;
@@ -54,8 +56,9 @@ if(!e){
       <div class="lec-bar"><span class="tag">${esc(t.nombre)}</span><span class="tiempo">≈ ${min} min de lectura</span><span class="lec-tools"><button type="button" class="btn lec-size" id="lec-menos" aria-label="Achicar letra">A−</button><button type="button" class="btn lec-size" id="lec-mas" aria-label="Agrandar letra">A+</button><button type="button" class="btn" id="lectura" aria-pressed="false">Modo lectura</button></span></div>
       <h1>${esc(e.titulo)}</h1>
       <div class="media">${media(e.media)}</div>
-      <div class="cuerpo">${(e.cuerpo || [e.texto]).map(p => `<p>${esc(p)}</p>`).join("")}</div>
+      <div class="cuerpo">${cuerpoHTML(e.cuerpo || [e.texto])}</div>
       <div class="links">${(e.links||[]).map(l=>`<a class="btn${l.main?" main":""}" href="${esc(l.url)}">${esc(l.t)}</a>`).join("")}</div>
+      ${credito(e, true)}
     </article>
     <div class="pager">${pag(vieja,"← anterior")}${pag(nueva,"siguiente →")}</div>`;
 }

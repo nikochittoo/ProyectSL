@@ -47,7 +47,71 @@ addEventListener("keydown", e => {
 (function(){
   const w = document.querySelector("footer .wrap");
   if(!w || typeof REDES === "undefined") return;
-  w.insertAdjacentHTML("beforeend", '<nav class="redes" aria-label="Secciones"><a href="sobre.html">Sobre el lab</a><a href="sumate.html">Sumate</a><a href="tablero.html">Tablero</a></nav>');
+  w.insertAdjacentHTML("beforeend", '<nav class="redes" aria-label="Secciones"><a href="index.html">Registro</a><a href="index.html?f=GUIA#feed">Guías</a><a href="diccionario.html">Diccionario</a><a href="tablero.html">Tablero</a><a href="sobre.html">Sobre el lab</a><a href="sumate.html">Sumate</a></nav>');
   w.insertAdjacentHTML("beforeend", `<nav class="redes" aria-label="Redes sociales"><span>${esc(REDES_NOTA)}</span>${REDES.map(r =>
     `<a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(r.nombre)} ${esc(r.ver)} (se abre en otra pestaña)">${esc(r.nombre)} <small>${esc(r.ver)}</small></a>`).join("")}</nav>`);
+})();
+
+/* ===== Cuerpo de las fichas: párrafos (texto) y bloques { h } { lista } { codigo } ===== */
+const textoPlano = arr => arr.map(b => typeof b === "string" ? b : (b.h || (b.lista || []).join(" ") || "")).join(" ");
+function cuerpoHTML(arr){
+  return arr.map(b => {
+    if(typeof b === "string") return `<p>${esc(b)}</p>`;
+    if(b.h) return `<h2 class="cuerpo-h">${esc(b.h)}</h2>`;
+    if(b.lista) return `<ul class="cuerpo-lista">${b.lista.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
+    if(b.codigo != null) return `<div class="codebloque">${b.titulo ? `<span class="code-t">${esc(b.titulo)}</span>` : ""}<button type="button" class="btn code-copiar" data-copiar>Copiar</button><pre tabindex="0"><code>${esc(b.codigo)}</code></pre></div>`;
+    return "";
+  }).join("");
+}
+/* Firma o crédito: autor → "por @usuario" (con link si está en AUTORES); fuente → "de Nombre" (link) */
+function credito(e, ficha){
+  if(e.autor){
+    const quien = [].concat(e.autor).map(n => (typeof AUTORES !== "undefined" && AUTORES[n]) ? `<a href="${esc(AUTORES[n])}" target="_blank" rel="noopener noreferrer">${esc(n)}</a>` : esc(n)).join(", ");
+    return `<span class="firma">${ficha ? "— " : "por "}${quien}</span>`;
+  }
+  if(e.fuente) return `<span class="firma">${ficha ? "Fuente: " : "de "}<a href="${esc(e.fuente.url)}" target="_blank" rel="noopener noreferrer">${esc(e.fuente.t)}</a></span>`;
+  return "";
+}
+async function copiar(t){
+  try{ await navigator.clipboard.writeText(t); return true; }
+  catch(_){
+    const x = document.createElement("textarea"); x.value = t; x.style.cssText = "position:fixed;opacity:0";
+    document.body.appendChild(x); x.select(); let ok = false;
+    try{ ok = document.execCommand("copy"); }catch(_){} x.remove(); return ok;
+  }
+}
+document.addEventListener("click", async ev => {
+  const c = ev.target.closest("[data-copiar]"); if(!c) return;
+  const ok = await copiar(c.parentElement.querySelector("code").textContent);
+  c.textContent = ok ? "Copiado" : "No se pudo";
+  toast(ok ? "Copiado al portapapeles" : "No se pudo copiar: seleccionalo a mano");
+  setTimeout(() => c.textContent = "Copiar", 1800);
+});
+
+/* Menú de arriba: marca en verde la sección donde estás (el home puede pasar el filtro activo) */
+function marcarNav(fo){
+  const pag = location.pathname.split("/").pop() || "index.html";
+  const f = fo !== undefined ? (fo === "all" ? null : fo) : new URLSearchParams(location.search).get("f");
+  document.querySelectorAll("header nav a").forEach(l => {
+    l.removeAttribute("aria-current");
+    const u = new URL(l.getAttribute("href"), location.href), p = u.pathname.split("/").pop() || "index.html";
+    if(p === pag && (p !== "index.html" || u.searchParams.get("f") === f)) l.setAttribute("aria-current", "page");
+  });
+}
+marcarNav();
+
+/* Menú de arriba en pantallas angostas: botón "Menú" que abre y cierra la lista (Esc o click afuera también cierran) */
+(function(){
+  const h = document.querySelector("header"), caja = h && h.querySelector(".wrap"), nav = h && h.querySelector("nav");
+  if(!nav || !caja) return;
+  nav.id = nav.id || "menu-principal";
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "menu-btn"; b.textContent = "Menú";
+  b.setAttribute("aria-expanded", "false"); b.setAttribute("aria-controls", nav.id);
+  caja.appendChild(b);
+  const poner = on => { h.classList.toggle("menu-abierto", on); b.setAttribute("aria-expanded", on); b.textContent = on ? "Cerrar" : "Menú"; };
+  b.addEventListener("click", () => poner(!h.classList.contains("menu-abierto")));
+  document.addEventListener("keydown", e => { if(e.key === "Escape" && h.classList.contains("menu-abierto")){ poner(false); b.focus(); } });
+  document.addEventListener("click", e => { if(!h.contains(e.target)) poner(false); });
+  addEventListener("resize", () => { if(innerWidth > 1240) poner(false); });
 })();
